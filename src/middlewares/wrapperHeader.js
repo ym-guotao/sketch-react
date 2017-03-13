@@ -1,10 +1,9 @@
 import { CALL_API } from 'redux-api-middleware';
 
 
-console.log(CALL_API);
-export default store => next => action => {
+export default store => next => (action) => {
   const ticket = action[CALL_API];
-  if (ticket) {
+  if(ticket) {
     // add header for every async API, then return them
     ticket.headers = Object.assign({
       Accept: 'application/json',

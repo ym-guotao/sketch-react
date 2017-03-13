@@ -12,6 +12,7 @@ export function restoreSessionFromLocalStorage() {
 }
 
 export function login(data) {
+  console.log(data);
   return async (dispatch) => {
     const action = await dispatch({
       [CALL_API]: {
@@ -24,10 +25,8 @@ export function login(data) {
 
     if(action.type === LOGIN_SUCCESS) {
       localStorage.setItem('session', JSON.stringify(action.payload));
-      browserHistory.shift();
     }
-
-    console.log(action);
+    browserHistory.push('/');
     return action;
   };
 }

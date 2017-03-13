@@ -1,29 +1,30 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import serialize from 'form-serialize';
+import serialize from 'form-serialize';
 
-import sessionActions from '../actions/session';
+import {login} from '../actions/session';
 
-
-const mapStateToProps = state => state.session;
+const mapStateToProps = state => ({
+  session: state.session,
+});
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...sessionActions }, dispatch),
+  actions: bindActionCreators({ login }, dispatch),
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class LoginPage extends React.Component {
+export default class LoginPage extends Component {
   constructor() {
     super();
 
     this.login = this.login.bind(this);
   }
-  login() {
-    console.log(this.props);
-    // e.preventDefault();
-    // const data = serialize(this.loginForm, { hash: true });
-    // data.next = this.props.location.query.next ? this.props.location.query.next : '/';
-    // this.props.actions.login(data);
+
+  login(e) {
+    e.preventDefault();
+    const data = serialize(this.loginForm, { hash: true });
+    data.next = this.props.location.query.next ? this.props.location.query.next : '/';
+    this.props.actions.login(data);
   }
 
   render() {
@@ -54,3 +55,14 @@ export default class LoginPage extends React.Component {
     );
   }
 }
+
+LoginPage.propTypes = {
+  actions: PropTypes.object,
+  location: PropTypes.object
+};
+
+LoginPage.defaultProps = {
+  actions: {},
+  location: {}
+};
+
