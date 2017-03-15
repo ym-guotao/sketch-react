@@ -2,29 +2,34 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import serialize from 'form-serialize';
-
-import {login} from '../actions/session';
+import { locationShape } from 'react-router';
+import { login } from '../actions/api';
 
 const mapStateToProps = state => ({
   session: state.session,
 });
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ login }, dispatch),
-});
+const mapDispatchToProps = dispatch => bindActionCreators({ login }, dispatch);
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class LoginPage extends Component {
-  constructor() {
-    super();
-
-    this.login = this.login.bind(this);
+  static defaultProps = {
   }
 
-  login(e) {
+  static propTypes = {
+    login: PropTypes.func.isRequired,
+    location: locationShape.isRequired
+  }
+
+  constructor() {
+    super();
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit(e) {
     e.preventDefault();
     const data = serialize(this.loginForm, { hash: true });
-    data.next = this.props.location.query.next ? this.props.location.query.next : '/';
-    this.props.actions.login(data);
+    const {next = '/'} = this.props.location.query;
+    this.props.login(Object.assign({}, data, {next}));
   }
 
   render() {
@@ -39,7 +44,7 @@ export default class LoginPage extends Component {
           <span>Your App</span>
         </a>
         <div>
-          <form role="form" ref={(loginForm) => { this.loginForm = loginForm; }}>
+          <form role="form" ref={(loginForm) => { this.loginForm = loginForm; }} onSubmit={this.onSubmit}>
             <div>
               <input type="email" name="email" required="" placeholder="admin@36node.com" />
               <label htmlFor="email">邮箱</label>
@@ -48,21 +53,10 @@ export default class LoginPage extends Component {
               <input type="password" name="password" required="" />
               <label htmlFor="password">密码</label>
             </div>
-            <button type="submit" onClick={this.login}>登录</button>
+            <button type="submit">登录</button>
           </form>
         </div>
       </div>
     );
   }
 }
-
-LoginPage.propTypes = {
-  actions: PropTypes.object,
-  location: PropTypes.object
-};
-
-LoginPage.defaultProps = {
-  actions: {},
-  location: {}
-};
-

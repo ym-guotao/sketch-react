@@ -1,8 +1,11 @@
-import {CALL_API} from 'redux-api-middleware';
 import {browserHistory} from 'react-router';
-
+import {CALL_API} from '../middlewares/callAPI';
 import {LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT} from '../constants';
 
+
+function fakeLoginAPI(data) {
+  return Promise.resolve(data);
+}
 
 export function restoreSessionFromLocalStorage() {
   return {
@@ -12,11 +15,10 @@ export function restoreSessionFromLocalStorage() {
 }
 
 export function login(data) {
-  console.log(data);
   return async (dispatch) => {
     const action = await dispatch({
       [CALL_API]: {
-        endpoint: '/api/sessions',
+        endpoint: fakeLoginAPI(data),     // url or function
         method: 'POST',
         body: JSON.stringify(data),
         types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAIL],
@@ -38,4 +40,3 @@ export function logout() {
     type: LOGOUT,
   };
 }
-

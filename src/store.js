@@ -1,7 +1,7 @@
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { apiMiddleware } from 'redux-api-middleware';
 import { applyMiddleware, createStore } from 'redux';
+import apiMiddleware from './middlewares/callAPI';
 import rootReducer from './reducers';
 import wrapperHeader from './middlewares/wrapperHeader';
 
