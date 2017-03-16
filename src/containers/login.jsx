@@ -29,7 +29,7 @@ export default class LoginPage extends Component {
     e.preventDefault();
     const data = serialize(this.loginForm, { hash: true });
     const {next = '/'} = this.props.location.query;
-    this.props.login(Object.assign({}, data, {next}));
+    this.props.login(Object.assign({}, data, {next, auth: true}));
   }
 
   render() {

@@ -8,6 +8,7 @@ export default function HelloWorld(props) {
     <div className="App">
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <h2>{props.email}</h2>
         <h2>{props.msg}</h2>
       </div>
     </div>
@@ -15,5 +16,6 @@ export default function HelloWorld(props) {
 }
 
 HelloWorld.propTypes = {
-  msg: PropTypes.string.isRequired
+  msg: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired
 };

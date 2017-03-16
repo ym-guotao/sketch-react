@@ -3,6 +3,9 @@ import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from '../constants';
 const initialState = {
   isFetching: false,
   auth: false,
+  user: null,
+  token: null,
+  refresh_token: null,
 };
 
 export default function sessionReducer(state = initialState, action) {
@@ -18,13 +21,7 @@ export default function sessionReducer(state = initialState, action) {
         error: action.payload.response,
       });
     case LOGOUT:
-      return Object.assign({}, state, {
-        isFetching: false,
-        auth: false,
-        user: null,
-        token: null,
-        refresh_token: null,
-      });
+      return Object.assign({}, state, initialState);
     default:
       return state;
   }

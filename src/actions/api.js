@@ -38,8 +38,9 @@ export function login(data) {
 
     if(action.type === LOGIN_SUCCESS) {
       localStorage.setItem('session', JSON.stringify(action.payload));
+      console.log(action.payload.next);
+      browserHistory.push(action.payload.next);
     }
-    browserHistory.push('/');
     return action;
   };
 }

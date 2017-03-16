@@ -1,39 +1,54 @@
-import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { getMessage } from '../actions/api';
+import React, {Component, PropTypes} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {getMessage, logout} from '../actions/api';
 import Hello from '../components/hello';
-import { selectMsg } from '../selectors';
+import {selectEmail, selectMsg} from '../selectors';
 
 
 const mapStateToProps = state => ({
+  email: selectEmail(state),
   message: selectMsg(state),
 });
-const mapDispatchToProps = dispatch => bindActionCreators({ getMessage }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {getMessage, logout},
+  dispatch
+);
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class HomePage extends Component {
   static defaultProps = {
-    message: 'Welcome to hello world page.'
+    message: 'Welcome to hello world page. Fetching your message...'
   }
 
   static propTypes = {
     getMessage: PropTypes.func.isRequired,
-    message: PropTypes.string
+    logout: PropTypes.func.isRequired,
+    message: PropTypes.string,
+    email: PropTypes.string.isRequired
   }
 
   constructor() {
     super();
-    this.a = 'heelo'; // no use, just for example
+    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount() {
     this.props.getMessage();
   }
 
+  onClick() {
+    this.props.logout();
+  }
+
   render() {
     return (
-      <Hello msg={this.props.message} />
+      <div>
+        <Hello msg={this.props.message} email={this.props.email} />
+        <button onClick={this.onClick}>
+          Logout
+        </button>
+      </div>
     );
   }
 }
