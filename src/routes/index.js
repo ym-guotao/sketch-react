@@ -1,13 +1,22 @@
 import React from 'react';
-import {Router, Route, browserHistory} from 'react-router';
-import HelloWorld from '../containers/hello-world';
-import HelloReact from '../containers/hello-react';
+import {Router, Route, IndexRoute} from 'react-router';
+import Home from '../containers/home';
+import Layout from '../containers/layout';
 import Login from '../containers/login';
 
+
+const authCheck = (nextState, replace) => {
+  const session = JSON.parse(localStorage.getItem('session'));
+  if(!session || !session.auth) {
+    replace('/login');
+  }
+};
+
 export default(
-  <Router history={browserHistory}>
-    <Route path="/" component={HelloWorld} />
+  <Router>
+    <Route path="/" component={Layout} onEnter={authCheck}>
+      <IndexRoute component={Home} />
+    </Route>
     <Route path="login" component={Login} />
-    <Route path="hello-react" component={HelloReact} />
   </Router>
 );

@@ -17,3 +17,7 @@ npm install && npm start
 ## bug list
 
 - redux-thunk 2.2.0 有bug -- Uncaught TypeError: Cannot read property 'async' of undefined
+
+## commit 规范
+
+[参考阮大侠的blog](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
