@@ -1,4 +1,4 @@
-import {GET_MESSAGE_REQUEST, GET_MESSAGE_SUCCESS, GET_MESSAGE_FAIL} from '../constants';
+import {GET_MESSAGE_REQUEST, GET_MESSAGE_SUCCESS, GET_MESSAGE_FAIL, LOGOUT} from '../constants';
 
 const initialState = {
   isFetching: false,
@@ -13,6 +13,8 @@ export default function messageReducer(state = initialState, action) {
       return Object.assign({}, state, {isFetching: false, result: action.payload.result});
     case GET_MESSAGE_FAIL:
       return Object.assign({}, state, {isFetching: false, result: 'no-match'});
+    case LOGOUT:
+      return Object.assign({}, state, {result: 'no-match'});
     default:
       return state;
   }

@@ -19,9 +19,18 @@ function callFakeAPI(data) {
 export const messageSchema = new schema.Entity('messages');
 
 export function restoreSessionFromLocalStorage() {
+  if(localStorage.getItem('session')) {
+    const session = JSON.parse(localStorage.getItem('session'));
+    if(session.auth) {
+      return {
+        type: LOGIN_SUCCESS,
+        payload: JSON.parse(localStorage.getItem('session')),
+      };
+    }
+  }
+
   return {
-    type: LOGIN_SUCCESS,
-    payload: JSON.parse(localStorage.getItem('session')),
+    type: 'DO_NOTHING'
   };
 }
 
@@ -38,7 +47,6 @@ export function login(data) {
 
     if(action.type === LOGIN_SUCCESS) {
       localStorage.setItem('session', JSON.stringify(action.payload));
-      console.log(action.payload.next);
       browserHistory.push(action.payload.next);
     }
     return action;

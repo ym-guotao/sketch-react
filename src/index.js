@@ -4,10 +4,14 @@ import {Router, browserHistory} from 'react-router';
 import {Provider} from 'react-redux';
 import routes from './routes';
 import configureStore from './store';
+import {restoreSessionFromLocalStorage } from './actions/api';
 
 
 // start app
 const store = configureStore();
+
+// get session back
+store.dispatch(restoreSessionFromLocalStorage());
 
 render(
   <Provider store={store}>

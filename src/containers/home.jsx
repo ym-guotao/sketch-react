@@ -7,8 +7,8 @@ import {selectEmail, selectMsg} from '../selectors';
 
 
 const mapStateToProps = state => ({
-  email: selectEmail(state),
-  message: selectMsg(state),
+  email: selectEmail(state) || 'anonymous',
+  message: selectMsg(state) || 'fetching...',
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {getMessage, logout},
@@ -18,13 +18,12 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 @connect(mapStateToProps, mapDispatchToProps)
 export default class HomePage extends Component {
   static defaultProps = {
-    message: 'Welcome to hello world page. Fetching your message...'
   }
 
   static propTypes = {
     getMessage: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
-    message: PropTypes.string,
+    message: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired
   }
 
@@ -34,7 +33,9 @@ export default class HomePage extends Component {
   }
 
   componentDidMount() {
-    this.props.getMessage();
+    setTimeout(() => {
+      this.props.getMessage();
+    }, 1000);
   }
 
   onClick() {
