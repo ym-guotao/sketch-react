@@ -1,11 +1,22 @@
+import {schema} from 'normalizr';
 import {browserHistory} from 'react-router';
 import {CALL_API} from '../middlewares/callAPI';
-import {LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT} from '../constants';
+import {
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  GET_MESSAGE_REQUEST,
+  GET_MESSAGE_SUCCESS,
+  GET_MESSAGE_FAIL,
+} from '../constants';
 
 
-function fakeLoginAPI(data) {
+function callFakeAPI(data) {
   return Promise.resolve(data);
 }
+
+export const messageSchema = new schema.Entity('messages');
 
 export function restoreSessionFromLocalStorage() {
   return {
@@ -18,7 +29,7 @@ export function login(data) {
   return async (dispatch) => {
     const action = await dispatch({
       [CALL_API]: {
-        endpoint: fakeLoginAPI(data),     // url or function
+        endpoint: callFakeAPI(data),     // url or function
         method: 'POST',
         body: JSON.stringify(data),
         types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAIL],
@@ -38,5 +49,16 @@ export function logout() {
   browserHistory.push('/login');
   return {
     type: LOGOUT,
+  };
+}
+
+export function getMessage() {
+  return {
+    [CALL_API]: {
+      endpoint: callFakeAPI({id: '12121212', content: 'Welcome to 36node.'}),     // url or function
+      method: 'POST',
+      schema: messageSchema,
+      types: [GET_MESSAGE_REQUEST, GET_MESSAGE_SUCCESS, GET_MESSAGE_FAIL],
+    }
   };
 }

@@ -35,7 +35,7 @@ export default store => next => action => {
           return Promise.reject(json);
         }
 
-        return schema ? normalize(json, schema) : json;
+        return json;
       })
     );
   }
@@ -57,7 +57,7 @@ export default store => next => action => {
 
   return endpoint
     .then(data => next(actionWith({
-      payload: data,
+      payload: schema ? normalize(data, schema) : data,
       type: successType,
     })))
     .catch(err => next(actionWith({
