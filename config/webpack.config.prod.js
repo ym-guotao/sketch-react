@@ -50,7 +50,8 @@ module.exports = {
   bail: true,
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
-  devtool: 'source-map',
+  // I do not want to use sourcemap
+  // devtool: 'source-map',
   // In production, we only want to load the polyfills and the app code.
   entry: [
     require.resolve('./polyfills'),
@@ -169,12 +170,22 @@ module.exports = {
       // enable scss with 'sass' loader and use 'style' loader as the same as css.
       {
         test: /\.scss$/, 
-        loader: 'style!css?sourceMap!sass?sourceMap'
+        loader: ExtractTextPlugin.extract(
+          'style',
+          'css',
+          'sass',
+          extractTextPluginOptions
+        )
       },
       // enable less with 'less' loader and user 'style | css' loader as the same as css.
       {
         test: /\.less$/,
-        loader: 'style!css?sourceMap!less?sourceMap'
+        loader: ExtractTextPlugin.extract(
+          'style',
+          'css',
+          'less',
+          extractTextPluginOptions
+        )
       }
     ]
   },
